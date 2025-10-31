@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { listUsers, type User } from "../services/UserService";
+import { listUsers, type User } from '../services/UserService';
 
 const UsersComponents: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -20,7 +20,7 @@ const UsersComponents: React.FC = () => {
 
   return (
     <div className="container">
-      <h2>List of Users</h2>
+      <h2>List of Users? Maybe this can be the score/leaderboard</h2>
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
