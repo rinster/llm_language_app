@@ -168,6 +168,26 @@ If you're new to Git and want to contribute via pull requests, follow these step
     mvnw.cmd spring-boot:run
    ```
 
+4. Debugging Build Failures
+    ```
+    [INFO] Scanning for projects...
+    [INFO] ------------------------------------------------------------------------
+    [INFO] BUILD FAILURE
+    [INFO] ------------------------------------------------------------------------
+    [INFO] Total time:  0.170 s
+    [INFO] Finished at: 2025-11-01T16:54:03-07:00
+    [INFO] ------------------------------------------------------------------------
+    ```
+    - Often you might come across build failures even though your code looks fine. 
+    - This might happen because of spring-boot's failure to compile properly.
+    - 
+   ```bash
+   # mac
+   mvn clean comile
+   
+   # On Windows:
+    mvnw.cmd clean compile
+
    The backend server will start on `http://localhost:8080` (default Spring Boot port).
 
    Note: Flyway will automatically run database migrations on startup.
