@@ -152,16 +152,20 @@ If you're new to Git and want to contribute via pull requests, follow these step
 
 2. Build the project:
    ```bash
-   ./mvnw clean build
+   # mac
+   mvn clean install
+
    # On Windows:
-   # mvnw.cmd clean build
+   mvnw.cmd clean install
    ```
 
 3. Run the Spring Boot application:
    ```bash
-   ./mvnw spring-boot:run
+   # mac
+   mvnw spring-boot:run
+   
    # On Windows:
-   # mvnw.cmd spring-boot:run
+    mvnw.cmd spring-boot:run
    ```
 
    The backend server will start on `http://localhost:8080` (default Spring Boot port).
