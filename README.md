@@ -180,16 +180,16 @@ If you're new to Git and want to contribute via pull requests, follow these step
     ```
     - Often you might come across build failures even though your code looks fine. 
     - This might happen because of spring-boot's failure to compile properly.
-    - 
+    
    ```bash
    # mac
    mvn clean comile
    
    # On Windows:
     mvnw.cmd clean compile
+    ```
 
    The backend server will start on `http://localhost:8080` (default Spring Boot port).
-
    Note: Flyway will automatically run database migrations on startup.
 
 ### 3. Frontend Setup

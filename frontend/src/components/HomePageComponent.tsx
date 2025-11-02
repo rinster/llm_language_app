@@ -1,12 +1,8 @@
 import React from "react";
 import { Globe, BookOpen, MessageCircle, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 
-const LanguageSplash: React.FC = () => {
-  const handleEnter = () => {
-    console.log("Entering app...");
-    // Add your navigation logic here
-  };
-
+const HomePageComponent: React.FC = () => {
   return (
     <>
       <style>{`
@@ -140,7 +136,7 @@ const LanguageSplash: React.FC = () => {
       `}</style>
 
       <div className="splash-container">
-        <div className="container">
+        <div>
           <div className="row justify-content-center">
             <div className="col-12 col-md-10 col-lg-8 text-center">
               {/* Floating Icons */}
@@ -194,9 +190,13 @@ const LanguageSplash: React.FC = () => {
               </div>
 
               {/* Enter Button */}
-              <button onClick={handleEnter} className="enter-btn mb-4">
+              <Link
+                to="/categories"
+                className="enter-btn mb-4 d-inline-block text-center"
+                role="button"
+              >
                 Enter
-              </button>
+              </Link>
 
               {/* Subtitle */}
               <p className="text-white small" style={{ opacity: 0.7 }}>
@@ -216,4 +216,4 @@ const LanguageSplash: React.FC = () => {
   );
 };
 
-export default LanguageSplash;
+export default HomePageComponent;
