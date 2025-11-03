@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -23,10 +24,12 @@ import java.util.Set;
 public class UserController {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserRepository userRepository, UserMapper userMapper) {
+    public UserController(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -104,11 +107,11 @@ public class UserController {
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-        if (!user.getPassword().equals(request.getOldPassword())) {
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        user.setPassword(request.getNewPassword());
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
         return ResponseEntity.noContent().build();
     }
