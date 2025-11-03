@@ -4,18 +4,18 @@ import com.teamEleven.backend.entities.Category;
 
 public class CategoryDto {
 
-    private Long id;
+    private Byte id;
     private String name;
 
     public CategoryDto() {}
 
-    public CategoryDto(Long id, String name) {
+    public CategoryDto(Byte id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Long getId() {return id;}
-    public void setId(Long id) {this.id = id;}
+    public Byte getId() {return id;}
+    public void setId(Byte id) {this.id = id;}
     public String getName() {return name;}
     public void setName(String name) {this.name = name;}
 }
