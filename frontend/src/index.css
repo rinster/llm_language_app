@@ -1,3 +1,12 @@
+body {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%) no-repeat;
+    height: 100vh;
+}
+
+
+.p-top {
+    padding-top: 8rem;
+}
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
