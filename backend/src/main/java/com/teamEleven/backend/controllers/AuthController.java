@@ -38,5 +38,11 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+    
+    // Test endpoint to verify authentication is working
+    @GetMapping("/test")
+    public ResponseEntity<String> testAuth() {
+        return ResponseEntity.ok("Authentication is working! This endpoint is public.");
+    }
 }
 
