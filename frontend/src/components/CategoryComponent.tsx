@@ -3,7 +3,10 @@ import React from "react";
 const CategoryComponent: React.FC = () => {
   return (
     <>
-      <h1>Category component</h1>
+        <div className="container p-top">
+            <h1>Category component</h1>
+        </div>
+
     </>
   );
 };
