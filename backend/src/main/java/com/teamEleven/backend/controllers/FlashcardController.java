@@ -12,15 +12,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/flashcards")
 @CrossOrigin(origins = "http://localhost:3000")
 public class FlashcardController {
-    private final FlashcardRepository flashcardRepository;
-    private final FlashcardMapper flashcardMapper;
-    private final CategoryRepository categoryRepository;
+
     private final FlashcardService flashcardService;
 
     public FlashcardController(FlashcardRepository flashcardRepository, FlashcardMapper flashcardMapper, CategoryRepository categoryRepository, FlashcardService flashcardService) {
-        this.flashcardRepository = flashcardRepository;
-        this.flashcardMapper = flashcardMapper;
-        this.categoryRepository = categoryRepository;
         this.flashcardService = flashcardService;
 
     }
