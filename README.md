@@ -4,6 +4,7 @@ A full-stack language learning application built with Spring Boot (backend) and 
 
 ## Authors
 - Erine Tieu
+- Redrix Natanauan
 
 ## Prerequisites
 
