@@ -2,6 +2,9 @@
 
 A full-stack language learning application built with Spring Boot (backend) and React/TypeScript (frontend).
 
+## Authors
+- Erine Tieu
+
 ## Prerequisites
 
 Before you begin, ensure you have the following software installed on your system:
