@@ -6,7 +6,6 @@ A full-stack language learning application built with Spring Boot (backend) and 
 
 - Erine Tieu
 - Redrix Natanauan
-- Jane Doe
 - Charlotte Z
 
 ## Prerequisites
