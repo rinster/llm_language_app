@@ -2,6 +2,8 @@ package com.teamEleven.backend.controllers;
 
 
 import com.teamEleven.backend.dtos.ChangePasswordRequest;
+import com.teamEleven.backend.entities.User;
+import com.teamEleven.backend.dtos.LoginRequest;
 import com.teamEleven.backend.dtos.RegisterUserRequest;
 import com.teamEleven.backend.dtos.UpdateUserRequest;
 import com.teamEleven.backend.dtos.UserDto;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -71,6 +74,21 @@ public class UserController {
         return ResponseEntity
                 .created(uri)
                 .body(userDto);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserDto> login(@Valid @RequestBody LoginRequest request) {
+        Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
+        if (userOptional.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        var user = userOptional.get();
+        if (!user.getPassword().equals(request.getPassword())) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        return ResponseEntity.ok(userMapper.toDto(user));
     }
 
     @PutMapping("/{id}")

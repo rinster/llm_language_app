@@ -1,6 +1,16 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const HeaderComponent: React.FC = () => {
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    signOut();
+    navigate("/");
+  };
+
   return (
     <>
       <style>{`
@@ -43,6 +53,19 @@ const HeaderComponent: React.FC = () => {
           transform: translateY(-2px);
         }
         
+        .btn-signout {
+          background: rgba(255, 255, 255, 0.15);
+          color: white;
+          border-radius: 50px;
+          font-weight: 600;
+          transition: all 0.3s ease;
+        }
+
+        .btn-signout:hover {
+          background: rgba(255, 255, 255, 0.25);
+          transform: translateY(-2px);
+        }
+
         .nav-link-custom {
           color: rgba(255, 255, 255, 0.9);
           text-decoration: none;
@@ -57,15 +80,17 @@ const HeaderComponent: React.FC = () => {
       <header className="header-glass fixed-top">
         <div className="container">
           <div className="d-flex align-items-center justify-content-between py-3">
-            <div className="d-flex align-items-center gap-3">
-              <div className="logo-box">
-                <span className="fw-bold fs-5" style={{ color: "#6366f1" }}>
-                  F
-                </span>
-              </div>
-              <span className="text-white fw-bold fs-5">FlashMind</span>
-            </div>
+              <Link to="/">
+                    <div className="d-flex align-items-center gap-3">
+                      <div className="logo-box">
+                        <span className="fw-bold fs-5" style={{ color: "#6366f1" }}>
+                          F
+                        </span>
+                      </div>
+                      <span className="text-white fw-bold fs-5">FlashMind</span>
 
+                    </div>
+              </Link>
             <nav className="d-none d-md-flex align-items-center gap-4">
               {/* <a href="#features" className="nav-link-custom">
                 Features
@@ -79,8 +104,25 @@ const HeaderComponent: React.FC = () => {
             </nav>
 
             <div className="d-flex align-items-center gap-2">
-              <button className="btn btn-signin px-3 py-2">Sign In</button>
-              <button className="btn btn-signup px-4 py-2">Sign Up</button>
+              {user ? (
+                <>
+                  <span className="text-white d-none d-md-inline">
+                    Welcome, {user.name.split(" ")[0]}
+                  </span>
+                  <button className="btn btn-signout px-3 py-2" onClick={handleSignOut}>
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link className="btn btn-signin px-3 py-2" to="/signin">
+                    Sign In
+                  </Link>
+                  <Link className="btn btn-signup px-4 py-2" to="/signup">
+                    Sign Up
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
