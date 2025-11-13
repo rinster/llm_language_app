@@ -14,15 +14,14 @@ CREATE TABLE users
     (id)
 );
 
-    -- Categories table
-    CREATE TABLE categories
-    (
-        id TINYINT
-        AUTO_INCREMENT NOT NULL,
-    name            VARCHAR
-        (255) NOT NULL,
-    CONSTRAINT `PRIMARY` PRIMARY KEY
-        (id)
+-- Categories table
+CREATE TABLE categories
+(
+    id TINYINT AUTO_INCREMENT NOT NULL,
+    name   VARCHAR
+    (255) NOT NULL,
+CONSTRAINT `PRIMARY` PRIMARY KEY
+    (id)
 );
 
         -- Flashcards table
