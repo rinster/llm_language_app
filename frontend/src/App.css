@@ -8,6 +8,10 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 2rem;
 }
 
+a {
+    text-decoration: none;
+}
+
 .container-llmApp {
     padding-top: 8rem;
     height: 95vh;

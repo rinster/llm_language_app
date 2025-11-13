@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import { listFlashcards, type Flashcard } from "../services/FlashcardsService";
 
 const FlashcardComponent: React.FC = () => {
@@ -26,7 +26,8 @@ const FlashcardComponent: React.FC = () => {
                 const fetchedFlashcards = response.data;
                 setFlashcards(fetchedFlashcards);
                 // Initialize queue with all flashcards
-                setQueue([...fetchedFlashcards]);
+                //setQueue([...fetchedFlashcards]);
+                setQueue(fetchedFlashcards.slice(0, 3)); // test
                 setTotalCards(fetchedFlashcards.length);
             } catch (err: unknown) {
                 setError("Failed to load flashcards");
@@ -302,6 +303,8 @@ const FlashcardComponent: React.FC = () => {
                         <p style={{ fontSize: "1.2rem", marginTop: "1rem" }}>
                             Final Score: <strong>{score}</strong>
                         </p>
+
+                        <Link to={`/llmChat`}><span className="btn-flashcard btn-again">Practice with an AI</span></Link>
                     </div>
                 )}
 
