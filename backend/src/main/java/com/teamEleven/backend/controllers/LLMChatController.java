@@ -22,6 +22,8 @@ public class LLMChatController {
     @Value("${google.api.key:}")
     private String apiKey;
 
+    private Client client;
+
     @GetMapping
     public ResponseEntity<String> basicChat() {
         // Check if API key is available from properties or environment
