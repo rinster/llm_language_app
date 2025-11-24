@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {Link, useParams} from "react-router-dom";
 import { listFlashcards, type Flashcard } from "../services/FlashcardsService";
+import { updateUserScore } from "../services/UserService";
 
 const FlashcardComponent: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -44,7 +45,7 @@ const FlashcardComponent: React.FC = () => {
         setIsFlipped(!isFlipped);
     };
 
-    const handleEasy = () => {
+    const handleEasy = async () => {
         if (queue.length === 0) return;
         
         // Remove current card from queue (dequeue)
@@ -54,6 +55,14 @@ const FlashcardComponent: React.FC = () => {
         // Increment score using functional update to get latest value
         setScore(prevScore => {
             const newScore = prevScore + 1;
+            
+            // Update user score in the backend
+            // TODO: Replace hardcoded user ID with actual authenticated user ID
+            const userId = 1; // This should come from authentication context
+            updateUserScore(userId, 1).catch((err) => {
+                console.error("Failed to update user score:", err);
+            });
+            
             // Check if queue is empty after this card is removed
             if (newQueue.length === 0) {
                 setTimeout(() => {

@@ -34,7 +34,7 @@ public class User {
                 "name = " + name + ", " +
                 "email = " + email + ", " +
                 "password = " + password +
-                ")";
+                ", score = " + score + ")";
     }
 
     public User() {
@@ -79,7 +79,9 @@ public class User {
         this.password = password;
     }
 
-    public void updateScore(int score) {
-        this.score += score;
+    public int getScore() { return score; }
+
+    public void updateScore(int score_to_add) {
+        this.score += score_to_add;
     }
 }

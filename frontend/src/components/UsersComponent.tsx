@@ -19,7 +19,7 @@ const UsersComponents: React.FC = () => {
 
 
   return (
-    <div className="container container-fluid">
+    <div className="container-llmApp container-fluid">
       <h2>List of Users? Maybe this can be the score/leaderboard</h2>
       <table className="table table-striped table-bordered">
         <thead>
