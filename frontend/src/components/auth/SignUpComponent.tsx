@@ -127,7 +127,7 @@ const SignUpComponent: React.FC = () => {
 
       <div className="auth-card">
         <h1 className="auth-title">Create Account</h1>
-        <p className="auth-subtitle">Join FlashMind to start mastering new skills.</p>
+        <p className="auth-subtitle">Join LingoLink to start mastering new skills.</p>
 
         {error && <div className="error-alert mb-3">{error}</div>}
 

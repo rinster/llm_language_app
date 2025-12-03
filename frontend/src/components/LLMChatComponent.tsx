@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { listFlashcards, type Flashcard } from "../services/FlashcardsService";
 
 interface Message {
     role: "user" | "assistant";
@@ -6,10 +8,12 @@ interface Message {
 }
 
 const LLMChatComponent: React.FC = () => {
+    const { id } = useParams<{ id: string }>();
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isStreaming, setIsStreaming] = useState<boolean>(false);
+    const [isInitializing, setIsInitializing] = useState<boolean>(false);
     const [sessionId] = useState<string>(() => `session-${Date.now()}`);
     const [useStreaming, setUseStreaming] = useState<boolean>(true);
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -22,6 +26,64 @@ const LLMChatComponent: React.FC = () => {
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
+
+    // Initialize chat with flashcards if category_id is provided
+    useEffect(() => {
+        const initializeChatWithFlashcards = async () => {
+            if (!id) return; // No category_id, skip initialization
+            
+            setIsInitializing(true);
+            try {
+                // Fetch flashcards for the category
+                const response = await listFlashcards(Number(id));
+                const flashcards = response.data;
+                
+                if (flashcards.length === 0) {
+                    setMessages([{
+                        role: "assistant",
+                        content: "No flashcards found for this category. You can still chat with me!"
+                    }]);
+                    setIsInitializing(false);
+                    return;
+                }
+                
+                // Send flashcards to backend to generate scenario
+                const initResponse = await fetch(
+                    `http://localhost:8080/api/llm-chat/chat/init?sessionId=${sessionId}`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ flashcards: flashcards }),
+                    }
+                );
+                
+                if (!initResponse.ok) {
+                    throw new Error("Failed to initialize chat scenario");
+                }
+                
+                const data = await initResponse.json();
+                const scenario = data.scenario;
+                
+                // Set the scenario as the first assistant message
+                setMessages([{
+                    role: "assistant",
+                    content: scenario
+                }]);
+            } catch (error) {
+                console.error("Error initializing chat with flashcards:", error);
+                setMessages([{
+                    role: "assistant",
+                    content: "I'm ready to help you practice! What would you like to work on?"
+                }]);
+            } finally {
+                setIsInitializing(false);
+            }
+        };
+        
+        initializeChatWithFlashcards();
+    }, [id, sessionId]);
 
     const handleSendMessage = async () => {
         if (!input.trim() || isLoading) return;
@@ -409,12 +471,22 @@ const LLMChatComponent: React.FC = () => {
                 </div>
 
                 <div className="chat-messages">
-                    {messages.length === 0 && (
+                    {isInitializing && (
                         <div style={{ textAlign: "center", color: "#6b7280", marginTop: "2rem" }}>
-                            {/*<p>Start a conversation! Ask me anything about language learning.</p>*/}
-                            {/*<p style={{ fontSize: "0.9rem", marginTop: "0.5rem" }}>*/}
-                            {/*    Try: "Help me practice Spanish" or "What's the difference between ser and estar?"*/}
-                            {/*</p>*/}
+                            <p>Setting up your practice scenario...</p>
+                            <div className="loading-indicator" style={{ justifyContent: "center", marginTop: "1rem" }}>
+                                <div className="loading-dot"></div>
+                                <div className="loading-dot"></div>
+                                <div className="loading-dot"></div>
+                            </div>
+                        </div>
+                    )}
+                    {!isInitializing && messages.length === 0 && (
+                        <div style={{ textAlign: "center", color: "#6b7280", marginTop: "2rem" }}>
+                            <p>Start a conversation! Ask me anything about language learning.</p>
+                            <p style={{ fontSize: "0.9rem", marginTop: "0.5rem" }}>
+                                Try: "Help me practice" or "Let's have a conversation"
+                            </p>
                         </div>
                     )}
                     {messages.map((message, index) => (
@@ -444,7 +516,7 @@ const LLMChatComponent: React.FC = () => {
                             onChange={(e) => setInput(e.target.value)}
                             onKeyPress={handleKeyPress}
                             placeholder="Type your message... (Press Enter to send, Shift+Enter for new line)"
-                            disabled={isLoading}
+                            disabled={isLoading || isInitializing}
                             rows={1}
                         />
                         {isStreaming ? (
@@ -458,7 +530,7 @@ const LLMChatComponent: React.FC = () => {
                             <button
                                 className="send-button"
                                 onClick={handleSendMessage}
-                                disabled={isLoading || !input.trim()}
+                                disabled={isLoading || isInitializing || !input.trim()}
                             >
                                 Send
                             </button>

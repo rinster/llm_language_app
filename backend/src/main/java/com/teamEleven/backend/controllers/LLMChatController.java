@@ -3,6 +3,8 @@ package com.teamEleven.backend.controllers;
 import com.google.genai.Chat;
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
+import com.teamEleven.backend.dtos.FlashcardDto;
+import com.teamEleven.backend.dtos.FlashcardListRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -149,6 +152,57 @@ public class LLMChatController {
             "sessionId", sessionId,
             "history", chatSession.getHistory(true).toString()
         ));
+    }
+
+    /**
+     * Initialize chat with flashcards and generate a conversational scenario
+     */
+    @PostMapping("/chat/init")
+    public ResponseEntity<Map<String, String>> initializeChatWithFlashcards(
+            @RequestParam(required = false, defaultValue = "default") String sessionId,
+            @RequestBody FlashcardListRequest request) {
+        try {
+            List<FlashcardDto> flashcards = request != null ? request.getFlashcards() : null;
+            if (flashcards == null || flashcards.isEmpty()) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "Flashcards list cannot be empty"));
+            }
+            
+            // Build a prompt that includes the flashcards and asks for a scenario
+            StringBuilder promptBuilder = new StringBuilder();
+            promptBuilder.append("You are a helpful english only language learning tutor. Based on the following flashcards, create an engaging conversational scenario where the user can practice using these phrases naturally. ");
+            promptBuilder.append("The scenario should be in english only, realistic and contextually appropriate. Start the conversation as if you are the other person in the scenario.\n\n");
+            promptBuilder.append("Flashcards to practice:\n");
+            
+            for (FlashcardDto flashcard : flashcards) {
+                promptBuilder.append("- ").append(flashcard.getQuestion())
+                        .append(" → ").append(flashcard.getAnswer()).append("\n");
+            }
+            
+            promptBuilder.append("\nNow, create a conversational scenario and start the conversation introducing yourself and the category topic. ");
+            promptBuilder.append("Make it natural and engaging. You should play the role of the other person in the scenario.");
+            
+            String initializationPrompt = promptBuilder.toString();
+            
+            // Create or get chat session
+            Chat chatSession = chatSessions.computeIfAbsent(sessionId, 
+                    id -> client.chats.create(MODEL_NAME));
+            
+            // Send initialization prompt and get scenario
+            GenerateContentResponse response = chatSession.sendMessage(initializationPrompt);
+            String scenario = response.text();
+            
+            Map<String, String> result = Map.of(
+                "scenario", scenario,
+                "sessionId", sessionId,
+                "message", "Chat initialized with conversational scenario"
+            );
+            
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", e.getMessage()));
+        }
     }
 
     /**
