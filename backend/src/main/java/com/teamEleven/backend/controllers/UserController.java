@@ -35,10 +35,10 @@ public class UserController {
 
     @GetMapping
     public Iterable<UserDto> getAllUsers(@RequestParam(required = false, defaultValue = "") String sort) {
-        if (!Set.of("name", "email").contains(sort)) {
-            sort = "name";
+        if (!Set.of("name", "email", "currentScore").contains(sort)) {
+            sort = "currentScore";
         }
-        return userRepository.findAll(Sort.by(Sort.Order.asc(sort)))
+        return userRepository.findAll(Sort.by(Sort.Order.desc(sort)))
                 .stream()
                 .map(userMapper::toDto)
                 .toList();

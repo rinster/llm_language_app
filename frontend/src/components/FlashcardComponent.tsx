@@ -29,9 +29,11 @@ const FlashcardComponent: React.FC = () => {
                 const fetchedFlashcards = response.data;
                 setFlashcards(fetchedFlashcards);
                 // Initialize queue with all flashcards
-                setQueue([...fetchedFlashcards]);
-                // setQueue(fetchedFlashcards.slice(0, 3)); // test
-                setTotalCards(fetchedFlashcards.length);
+                // setQueue([...fetchedFlashcards]);
+
+                // setTotalCards(fetchedFlashcards.length);
+                setQueue(fetchedFlashcards.slice(0, 3)); // test
+                setTotalCards(3);
             } catch (err: unknown) {
                 setError("Failed to load flashcards");
                 console.error("Error fetching flashcards:", err);

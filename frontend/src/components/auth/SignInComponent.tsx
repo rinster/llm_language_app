@@ -121,7 +121,7 @@ const SignInComponent: React.FC = () => {
             <input
               type="email"
               className="form-control"
-              placeholder="you@flashmind.app"
+              placeholder="you@email.com"
               name="email"
               value={credentials.email}
               onChange={handleChange}
