@@ -8,6 +8,17 @@ export interface User {
   email: string;
 }
 
+export interface RegisterUserRequest {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
 export interface ApiResponse<T> {
   data: T;
 }
@@ -17,4 +28,9 @@ export const listUsers = (): Promise<AxiosResponse<User[]>> =>
 
 export const updateUserScore = (userId: number, points: number): Promise<AxiosResponse<User>> =>
   axios.post<User>(`${REST_API_BASE_URL}/${userId}/update-score`, { points });
+export const createUser = (payload: RegisterUserRequest): Promise<AxiosResponse<User>> =>
+  axios.post<User>(REST_API_BASE_URL, payload);
+
+export const loginUser = (payload: LoginRequest): Promise<AxiosResponse<User>> =>
+  axios.post<User>(`${REST_API_BASE_URL}/login`, payload);
 

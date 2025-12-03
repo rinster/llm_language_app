@@ -1,12 +1,15 @@
-import UsersComponents from "../src/components/UsersComponent";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import CategoryComponent from "./components/CategoryComponent";
-import HomePageComponent_v2 from "./components/HomePageComponent_v2";
 import FooterComponent from "./components/FooterComponent";
 import HeaderComponent from "./components/HeaderComponent";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import FlashcardComponent from "./components/FlashcardComponent.tsx";
 import LLMChatComponent from "./components/LLMChatComponent.tsx";
+import HomePageComponent_v2 from "./components/HomePageComponent_v2";
+import SignInComponent from "./components/auth/SignInComponent";
+import SignUpComponent from "./components/auth/SignUpComponent";
+import UsersComponents from "./components/UsersComponent";
 
 function App() {
   return (
@@ -19,6 +22,8 @@ function App() {
           <Route path="/flashcards/:id" element={<FlashcardComponent />}></Route>
             <Route path="/llmChat" element={<LLMChatComponent />}></Route>
           <Route path="/users" element={<UsersComponents />}></Route>
+          <Route path="/signin" element={<SignInComponent />}></Route>
+          <Route path="/signup" element={<SignUpComponent />}></Route>
         </Routes>
         <FooterComponent />
       </BrowserRouter>
