@@ -3,7 +3,6 @@ import "./App.css";
 import CategoryComponent from "./components/CategoryComponent";
 import FooterComponent from "./components/FooterComponent";
 import HeaderComponent from "./components/HeaderComponent";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import FlashcardComponent from "./components/FlashcardComponent.tsx";
 import LLMChatComponent from "./components/LLMChatComponent.tsx";
 import HomePageComponent_v2 from "./components/HomePageComponent_v2";

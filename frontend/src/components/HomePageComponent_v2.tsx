@@ -149,7 +149,7 @@ const HomePageComponent_v2: React.FC = () => {
             letterSpacing: "-2px",
           }}
         >
-          FlashMind
+          LingoLink
         </h1>
         <p
           className="text-white mb-5 animate-fade-in-up-delay-1"
@@ -158,7 +158,7 @@ const HomePageComponent_v2: React.FC = () => {
             opacity: 0.95,
           }}
         >
-          Master anything, one card at a time
+          Master languages, one card at a time
         </p>
 
         <Link

@@ -20,7 +20,7 @@ const CategoryComponent: React.FC = () => {
 
   return (
     <>
-        <div className="container container-llmApp">
+        <div className="container container-llmApp p-top">
             <div className="panel panel-default">
                 <h2 className="panel-heading">Categories</h2>
                 {categories.length > 0 ? (

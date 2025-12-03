@@ -25,7 +25,7 @@ public class User {
 
     @Column(name = "current_score")
     @JsonIgnore
-    private int score;
+    private int current_score;
 
     @Override
     public String toString() {
@@ -34,7 +34,7 @@ public class User {
                 "name = " + name + ", " +
                 "email = " + email + ", " +
                 "password = " + password +
-                ", score = " + score + ")";
+                ", score = " + current_score + ")";
     }
 
     public User() {
@@ -79,9 +79,9 @@ public class User {
         this.password = password;
     }
 
-    public int getScore() { return score; }
+    public int getCurrent_score() { return current_score; }
 
     public void updateScore(int score_to_add) {
-        this.score += score_to_add;
+        this.current_score += score_to_add;
     }
 }

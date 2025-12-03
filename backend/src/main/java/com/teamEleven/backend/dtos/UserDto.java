@@ -7,14 +7,16 @@ public class UserDto {
     private Long id;
     private String name;
     private String email;
+    private int current_score;
 
     public UserDto() {
     }
 
-    public UserDto(Long id, String name, String email,  LocalDateTime createdAt) {
+    public UserDto(Long id, String name, String email,  LocalDateTime createdAt, Integer current_score) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.current_score = current_score;
     }
 
     public Long getId() {
@@ -40,6 +42,8 @@ public class UserDto {
     public void setEmail(String email) {
         this.email = email;
     }
+    public int getCurrent_score() {return current_score;}
+    public void setCurrent_score(int current_score) {this.current_score = current_score;}
 
 }
 

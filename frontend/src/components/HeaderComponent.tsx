@@ -84,10 +84,10 @@ const HeaderComponent: React.FC = () => {
                     <div className="d-flex align-items-center gap-3">
                       <div className="logo-box">
                         <span className="fw-bold fs-5" style={{ color: "#6366f1" }}>
-                          F
+                          L
                         </span>
                       </div>
-                      <span className="text-white fw-bold fs-5">FlashMind</span>
+                      <span className="text-white fw-bold fs-5">LingoLink</span>
 
                     </div>
               </Link>

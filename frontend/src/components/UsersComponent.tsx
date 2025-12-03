@@ -19,13 +19,14 @@ const UsersComponents: React.FC = () => {
 
 
   return (
-    <div className="container-llmApp container-fluid">
-      <h2>List of Users? Maybe this can be the score/leaderboard</h2>
+    <div className="container-llmApp p-top container-fluid">
+      <h2>Leaderboard</h2>
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
             <th>Name</th>
-            <th>email</th>
+            <th>Email</th>
+              <th>Score</th>
           </tr>
         </thead>
         <tbody>
@@ -34,6 +35,7 @@ const UsersComponents: React.FC = () => {
               <tr key={user.id}>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
+                <td>{user.current_score}</td>
               </tr>
             ))
           ) : (

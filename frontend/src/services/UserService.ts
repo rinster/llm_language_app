@@ -6,6 +6,7 @@ export interface User {
   id: number;
   name: string;
   email: string;
+  current_score: number;
 }
 
 export interface RegisterUserRequest {
