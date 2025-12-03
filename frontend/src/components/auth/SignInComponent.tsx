@@ -98,19 +98,7 @@ const SignInComponent: React.FC = () => {
           box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
         }
 
-        .btn-primary {
-          background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-          border: none;
-          border-radius: 14px;
-          padding: 0.85rem 1rem;
-          font-weight: 600;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
 
-        .btn-primary:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 12px 20px -10px rgba(99, 102, 241, 0.8);
-        }
 
         .error-alert {
           background: rgba(239, 68, 68, 0.15);

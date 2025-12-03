@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import {Link, useParams} from "react-router-dom";
 import { listFlashcards, type Flashcard } from "../services/FlashcardsService";
 import { updateUserScore } from "../services/UserService";
+import { useAuth } from "../context/AuthContext";
 
 const FlashcardComponent: React.FC = () => {
     const { id } = useParams<{ id: string }>();
+    const { user } = useAuth();
     const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
     const [queue, setQueue] = useState<Flashcard[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -27,8 +29,8 @@ const FlashcardComponent: React.FC = () => {
                 const fetchedFlashcards = response.data;
                 setFlashcards(fetchedFlashcards);
                 // Initialize queue with all flashcards
-                //setQueue([...fetchedFlashcards]);
-                setQueue(fetchedFlashcards.slice(0, 3)); // test
+                setQueue([...fetchedFlashcards]);
+                // setQueue(fetchedFlashcards.slice(0, 3)); // test
                 setTotalCards(fetchedFlashcards.length);
             } catch (err: unknown) {
                 setError("Failed to load flashcards");
@@ -57,17 +59,19 @@ const FlashcardComponent: React.FC = () => {
             const newScore = prevScore + 1;
             
             // Update user score in the backend
-            // TODO: Replace hardcoded user ID with actual authenticated user ID
-            const userId = 1; // This should come from authentication context
-            updateUserScore(userId, 1).catch((err) => {
-                console.error("Failed to update user score:", err);
-            });
+            const userId = user?.id;
+            if (userId) {
+                updateUserScore(userId, 1).catch((err) => {
+                    console.error("Failed to update user score:", err);
+                });
+            }
             
             // Check if queue is empty after this card is removed
             if (newQueue.length === 0) {
-                setTimeout(() => {
-                    alert(`Great job! You've completed all flashcards! Final Score: ${newScore}`);
-                }, 100);
+                // testing
+                // setTimeout(() => {
+                //     alert(`Great job! You've completed all flashcards! Final Score: ${newScore}`);
+                // }, 100);
             }
             return newScore;
         });
@@ -313,7 +317,7 @@ const FlashcardComponent: React.FC = () => {
                             Final Score: <strong>{score}</strong>
                         </p>
 
-                        <Link to={`/llmChat`}><span className="btn-flashcard btn-again">Practice with an AI</span></Link>
+                        <Link to={`/llmChat/${id}`}><span className="btn-flashcard btn-again">Practice with an AI</span></Link>
                     </div>
                 )}
 

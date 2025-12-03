@@ -28,7 +28,7 @@ const CategoryComponent: React.FC = () => {
                         <div className="card text-center mb-2" style={{width: '18rem;'}} key={category.id}>
                             <div className="card-body">
                                 <h5 className="card-title">{category.name}</h5>
-                                <Link to={`/flashcards/${category.id}`} className="btn btn-tertiary-custom px-3 py-2">
+                                <Link to={`/flashcards/${category.id}`} className="btn-primary px-3 py-2">
                                     Start Lesson
                                 </Link>
                             </div>

@@ -19,7 +19,7 @@ function App() {
           <Route path="/" element={<HomePageComponent_v2 />}></Route>
           <Route path="/categories" element={<CategoryComponent />}></Route>
           <Route path="/flashcards/:id" element={<FlashcardComponent />}></Route>
-            <Route path="/llmChat" element={<LLMChatComponent />}></Route>
+            <Route path="/llmChat/:id" element={<LLMChatComponent />}></Route>
           <Route path="/users" element={<UsersComponents />}></Route>
           <Route path="/signin" element={<SignInComponent />}></Route>
           <Route path="/signup" element={<SignUpComponent />}></Route>

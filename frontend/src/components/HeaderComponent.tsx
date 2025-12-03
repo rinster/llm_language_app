@@ -92,10 +92,19 @@ const HeaderComponent: React.FC = () => {
                     </div>
               </Link>
             <nav className="d-none d-md-flex align-items-center gap-4">
-              {/* <a href="#features" className="nav-link-custom">
-                Features
-              </a>
-              <a href="#pricing" className="nav-link-custom">
+                {user ? (
+                    <>
+                        <Link to="/users" className="nav-link-custom">
+                            Leaderboard
+                        </Link>
+                        <Link to="/categories" className="nav-link-custom">
+                            Categories
+                        </Link>
+                    </>
+
+                ):<></>}
+
+                {/*<a href="#pricing" className="nav-link-custom">
                 Pricing
               </a>
               <a href="#about" className="nav-link-custom">
