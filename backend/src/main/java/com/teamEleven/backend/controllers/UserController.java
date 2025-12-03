@@ -5,6 +5,7 @@ import com.teamEleven.backend.dtos.ChangePasswordRequest;
 import com.teamEleven.backend.entities.User;
 import com.teamEleven.backend.dtos.LoginRequest;
 import com.teamEleven.backend.dtos.RegisterUserRequest;
+import com.teamEleven.backend.dtos.UpdateScoreRequest;
 import com.teamEleven.backend.dtos.UpdateUserRequest;
 import com.teamEleven.backend.dtos.UserDto;
 import com.teamEleven.backend.mappers.UserMapper;
@@ -129,6 +130,22 @@ public class UserController {
         user.setPassword(request.getNewPassword());
         userRepository.save(user);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/update-score")
+    public ResponseEntity<UserDto> updateScore(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateScoreRequest request
+    ){
+        var user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        user.updateScore(request.getPoints());
+        userRepository.save(user);
+        
+        return ResponseEntity.ok(userMapper.toDto(user));
     }
 }
 

@@ -26,6 +26,8 @@ export interface ApiResponse<T> {
 export const listUsers = (): Promise<AxiosResponse<User[]>> => 
   axios.get<User[]>(REST_API_BASE_URL);
 
+export const updateUserScore = (userId: number, points: number): Promise<AxiosResponse<User>> =>
+  axios.post<User>(`${REST_API_BASE_URL}/${userId}/update-score`, { points });
 export const createUser = (payload: RegisterUserRequest): Promise<AxiosResponse<User>> =>
   axios.post<User>(REST_API_BASE_URL, payload);
 
