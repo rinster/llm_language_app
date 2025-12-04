@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {Link, useParams} from "react-router-dom";
 import { listFlashcards, type Flashcard } from "../services/FlashcardsService";
 import { updateUserScore } from "../services/UserService";
 import { useAuth } from "../context/AuthContext";
+import wonAudioFile from "../assets/sounds/won.wav";
+import lostAudioFile from "../assets/sounds/lost.wav";
+import confetti from "https://cdn.skypack.dev/canvas-confetti";
 
 const FlashcardComponent: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -14,6 +17,41 @@ const FlashcardComponent: React.FC = () => {
     const [isFlipped, setIsFlipped] = useState<boolean>(false);
     const [score, setScore] = useState<number>(0);
     const [totalCards, setTotalCards] = useState<number>(0);
+    
+    // Use refs to store audio objects so they're not recreated on every render
+    const wonAudioRef = useRef<HTMLAudioElement | null>(null);
+    const lostAudioRef = useRef<HTMLAudioElement | null>(null);
+    
+    // Initialize audio objects once
+    useEffect(() => {
+        // Use imported audio file paths
+        wonAudioRef.current = new Audio(wonAudioFile);
+        lostAudioRef.current = new Audio(lostAudioFile);
+        
+        // Preload audio files
+        wonAudioRef.current.preload = 'auto';
+        lostAudioRef.current.preload = 'auto';
+        
+        // Handle audio errors silently
+        wonAudioRef.current.addEventListener('error', () => {
+            console.warn('Could not load won audio file');
+        });
+        lostAudioRef.current.addEventListener('error', () => {
+            console.warn('Could not load lost audio file');
+        });
+        
+        // Cleanup on unmount
+        return () => {
+            if (wonAudioRef.current) {
+                wonAudioRef.current.pause();
+                wonAudioRef.current = null;
+            }
+            if (lostAudioRef.current) {
+                lostAudioRef.current.pause();
+                lostAudioRef.current = null;
+            }
+        };
+    }, []);
 
     useEffect(() => {
         const fetchFlashcards = async () => {
@@ -32,8 +70,8 @@ const FlashcardComponent: React.FC = () => {
                 // setQueue([...fetchedFlashcards]);
 
                 // setTotalCards(fetchedFlashcards.length);
-                setQueue(fetchedFlashcards.slice(0, 3)); // test
-                setTotalCards(3);
+                setQueue(fetchedFlashcards.slice(0, 6)); // test
+                setTotalCards(5);
             } catch (err: unknown) {
                 setError("Failed to load flashcards");
                 console.error("Error fetching flashcards:", err);
@@ -51,6 +89,14 @@ const FlashcardComponent: React.FC = () => {
 
     const handleEasy = async () => {
         if (queue.length === 0) return;
+        
+        // Play audio without blocking - handle errors silently
+        if (wonAudioRef.current) {
+            wonAudioRef.current.play().catch((err) => {
+                // Silently handle autoplay policy errors
+                console.warn('Could not play won audio:', err);
+            });
+        }
         
         // Remove current card from queue (dequeue)
         const newQueue = [...queue];
@@ -74,6 +120,7 @@ const FlashcardComponent: React.FC = () => {
                 // setTimeout(() => {
                 //     alert(`Great job! You've completed all flashcards! Final Score: ${newScore}`);
                 // }, 100);
+                confetti();
             }
             return newScore;
         });
@@ -84,6 +131,14 @@ const FlashcardComponent: React.FC = () => {
 
     const handleAgain = () => {
         if (queue.length === 0) return;
+        
+        // Play audio without blocking - handle errors silently
+        if (lostAudioRef.current) {
+            lostAudioRef.current.play().catch((err) => {
+                // Silently handle autoplay policy errors
+                console.warn('Could not play lost audio:', err);
+            });
+        }
         
         // Get current card
         const currentCard = queue[0];
