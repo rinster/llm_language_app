@@ -193,14 +193,14 @@ const HomePageComponent_v2: React.FC = () => {
           <div className="col-12 col-md-6 col-lg-3">
             <Feature
               icon="✨"
-              title="Create Cards Instantly"
+              title="Create Cards Instantly (Coming soon!)"
               description="Generate flashcards from your notes, PDFs, or images in seconds with AI"
             />
           </div>
           <div className="col-12 col-md-6 col-lg-3">
             <Feature
               icon="📊"
-              title="Track Your Progress"
+              title="Track Your Progress (Coming soon!)"
               description="Beautiful analytics show your learning journey and keep you motivated"
             />
           </div>

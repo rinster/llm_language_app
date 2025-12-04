@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { listFlashcards, type Flashcard } from "../services/FlashcardsService";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface Message {
     role: "user" | "assistant";
@@ -329,7 +331,88 @@ const LLMChatComponent: React.FC = () => {
                     padding: 1rem 1.25rem;
                     border-radius: 15px;
                     word-wrap: break-word;
-                    white-space: pre-wrap;
+                }
+
+                .message-content p {
+                    margin: 0.5rem 0;
+                }
+
+                .message-content p:first-child {
+                    margin-top: 0;
+                }
+
+                .message-content p:last-child {
+                    margin-bottom: 0;
+                }
+
+                .message-content code {
+                    background: rgba(0, 0, 0, 0.1);
+                    padding: 0.2rem 0.4rem;
+                    border-radius: 4px;
+                    font-family: 'Courier New', monospace;
+                    font-size: 0.9em;
+                }
+
+                .message-content pre {
+                    background: rgba(0, 0, 0, 0.1);
+                    padding: 1rem;
+                    border-radius: 8px;
+                    overflow-x: auto;
+                    margin: 0.5rem 0;
+                }
+
+                .message-content pre code {
+                    background: none;
+                    padding: 0;
+                }
+
+                .message-content ul,
+                .message-content ol {
+                    margin: 0.5rem 0;
+                    padding-left: 1.5rem;
+                }
+
+                .message-content li {
+                    margin: 0.25rem 0;
+                }
+
+                .message-content h1,
+                .message-content h2,
+                .message-content h3,
+                .message-content h4,
+                .message-content h5,
+                .message-content h6 {
+                    margin: 0.75rem 0 0.5rem 0;
+                    font-weight: 600;
+                }
+
+                .message-content h1:first-child,
+                .message-content h2:first-child,
+                .message-content h3:first-child,
+                .message-content h4:first-child,
+                .message-content h5:first-child,
+                .message-content h6:first-child {
+                    margin-top: 0;
+                }
+
+                .message-content blockquote {
+                    border-left: 3px solid rgba(0, 0, 0, 0.2);
+                    padding-left: 1rem;
+                    margin: 0.5rem 0;
+                    font-style: italic;
+                }
+
+                .message-content a {
+                    color: inherit;
+                    text-decoration: underline;
+                }
+
+                .message.user .message-content a {
+                    color: rgba(255, 255, 255, 0.9);
+                }
+
+                .message.assistant .message-content a {
+                    color: #667eea;
                 }
 
                 .message.user .message-content {
@@ -490,11 +573,12 @@ const LLMChatComponent: React.FC = () => {
                         </div>
                     )}
                     {messages.map((message, index) => (
-                        <div
-                            key={index}
-                            className={`message ${message.role}`}
-                        >
-                            <div className="message-content">{message.content}</div>
+                        <div key={index} className={`message ${message.role}`}>
+                            <div className="message-content">
+                                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                    {message.content}
+                                </ReactMarkdown>
+                            </div>
                         </div>
                     ))}
                     {messages.length > 0 && messages[messages.length - 1].role === "assistant" && 
